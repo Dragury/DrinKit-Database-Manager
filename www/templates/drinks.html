@@ -1,0 +1,55 @@
+<div class="view-wrapper">
+    <ul class="filter-buttons">
+        <li>
+            <a class="button btn-success">
+                Cocktails
+            </a>
+        </li>
+        <li>
+            <a class="button btn-success  btn-danger">
+                Mocktails
+            </a>
+        </li>
+        <li>
+            <a class="button btn-danger">
+                Smoothies
+            </a>
+        </li>
+        <li>
+            <a class="button btn-success">
+                Milkshakes
+            </a>
+        </li>
+        <li>
+            <a class="button btn-default right">
+                Reload
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+        </li>
+
+    </ul>
+    <div>
+        <div>
+            <div ng-repeat="drink in drinks">
+                <a ng-click="goToDrink(drink.id)">
+                    <div class="drink-box">
+                        <img src="{{drink.url}}">
+                        <div class="drink-info">
+                            <h1>{{drink.name}}</h1>
+                            <p>{{drink.description}}</p>
+                            <p>Rum, Coke, More Rum, More Coke</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div>
+                <a ng-click="goToDrink(0)">
+                    <div class="drink-box new-drink-button">
+                        <i class="glyphicon glyphicon-plus text-muted"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

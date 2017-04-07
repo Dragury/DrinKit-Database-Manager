@@ -1,0 +1,117 @@
+@font-face {
+  font-family: 'PT Sans';
+  src: url("fonts/PT_Sans.ttf");
+}
+html {
+  position: absolute;
+  font-family: "PT Sans", sans-serif;
+  background: -webkit-radial-gradient(center, circle, #1CBDED, #368CB2);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.login-logo {
+  position: relative;
+  width: 200px;
+  height: auto;
+}
+.logo-center {
+  left: -100px;
+  top: -100px;
+}
+.center-dot {
+  position: relative;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+}
+.bottom-dot {
+  position: relative;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+  top: 100%;
+}
+.login-door {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  height: 50%;
+  z-index: 2;
+}
+.login-door-top {
+  top: 0px;
+  background: -webkit-radial-gradient(bottom, circle, #1CBDED, #368CB2);
+  z-index: 3;
+}
+.login-door-bottom {
+  bottom: 0px;
+  background: -webkit-radial-gradient(top, circle, #1CBDED, #368CB2);
+}
+.max {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.login-form {
+  position: relative;
+  left: -300px;
+  top: -150px;
+  width: 600px;
+  height: 300px;
+  background: #333 -webkit-linear-gradient(bottom, #333, #2b2b2b);
+}
+.login-background {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: -webkit-radial-gradient(center, circle, #009bcb, #146a90);
+}
+.login-form-inputs {
+  height: 100px;
+  position: relative;
+  width: 200px;
+  left: -100px;
+}
+.login-form-inputs input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 2px;
+  margin: 4px 0;
+}
+.button,
+.button:hover {
+  cursor: default;
+  user-select: none;
+  box-sizing: border-box;
+  position: relative;
+  padding: 5px 20px;
+  border: solid 1px #b8b8b8;
+  text-decoration: none;
+  font: 11px system-ui;
+  border-radius: 3px;
+  color: black;
+  background: #FCFCFC -webkit-linear-gradient(top, #FCFCFC, #dadada);
+}
+.button:hover {
+  background: #FCFCFC -webkit-linear-gradient(top, #ffffff, #ebebeb);
+}
+.login-button {
+  float: right;
+  margin-top: 5px;
+}
+.view-wrapper {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+}

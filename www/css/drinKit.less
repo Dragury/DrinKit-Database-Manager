@@ -1,0 +1,138 @@
+@drinKitLightBlue: #1CBDED;
+@drinKitDarkBlue: #368CB2;
+@drinKitButtonBackground: #FCFCFC;
+@drinKitForm: #333;
+@drinKitFont: "fonts/PT_Sans.ttf";
+@logoSize: 200px;
+
+.radial(@location, @start, @end) {
+  background: -webkit-radial-gradient(@location, circle, @start, @end);
+}
+
+.maxwh() {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  src: url(@drinKitFont);
+}
+
+html {
+  position: absolute;
+  font-family: "PT Sans", sans-serif;
+  .radial(center, @drinKitLightBlue, @drinKitDarkBlue);
+  .maxwh();
+  overflow: hidden;
+}
+
+.login-logo {
+  position: relative;
+  width: @logoSize;
+  height: auto;
+}
+
+.logo-center {
+  left: -@logoSize / 2;
+  top: -@logoSize / 2;
+}
+
+.center-dot {
+  position: relative;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+}
+
+.bottom-dot {
+  .center-dot;
+  top: 100%;
+}
+
+.login-door {
+  .maxwh;
+  position: absolute;
+  height: 50%;
+  z-index: 2;
+}
+
+.login-door-top {
+  //top: -150px;
+  top: 0px;
+  .radial(bottom, @drinKitLightBlue, @drinKitDarkBlue);
+  z-index: 3;
+}
+
+.login-door-bottom {
+  //bottom: -150px;
+  bottom: 0px;
+  .radial(top, @drinKitLightBlue, @drinKitDarkBlue);
+}
+
+.max {
+  .maxwh;
+}
+
+.login-form {
+  @formWidth: 600px;
+  @formHeight: 300px;
+  position: relative;
+  left: -@formWidth / 2;
+  top: -@formHeight / 2;
+  width: @formWidth;
+  height: @formHeight;
+  background: @drinKitForm -webkit-linear-gradient(bottom, @drinKitForm, @drinKitForm - #080808);
+}
+
+.login-background {
+  .maxwh;
+  .radial(center, @drinKitLightBlue - #222, @drinKitDarkBlue - #222);
+}
+
+.login-form-inputs {
+  @inputWidth: 200px;
+  height: 100px;
+  position: relative;
+  width: @inputWidth;
+  left: -@inputWidth / 2;
+}
+
+.login-form-inputs input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 2px;
+  margin: 4px 0;
+}
+
+.button {
+  cursor: default;
+  user-select: none;
+  box-sizing: border-box;
+  @buttonPadding: 5px 20px;
+  position: relative;
+  padding: @buttonPadding;
+  border: solid 1px @drinKitButtonBackground - #444;
+  text-decoration: none;
+  font: 11px system-ui;
+  border-radius: 3px;
+  color: black;
+  background: @drinKitButtonBackground -webkit-linear-gradient(top, @drinKitButtonBackground, @drinKitButtonBackground - #222);
+}
+
+.button:hover {
+  &:extend(.button);
+  background: @drinKitButtonBackground -webkit-linear-gradient(top, @drinKitButtonBackground + #111, @drinKitButtonBackground - #111);
+}
+
+.login-button {
+  float: right;
+  margin-top: 5px;
+}
+.view-wrapper {
+  .maxwh;
+  opacity:0;
+}

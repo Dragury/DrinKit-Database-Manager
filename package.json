@@ -1,0 +1,9 @@
+{
+  "name": "drinKit Database Manager",
+  "main": "www/index.html",
+  "window": {
+    "icon":"img/icon.png",
+    "min_width":800,
+    "min_height":600
+  }
+}
