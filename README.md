@@ -1,4 +1,4 @@
-#drinKit Database Manager
+# drinKit Database Manager
 
 The new, shiny (not broken) database manager for the mobile drinks app for Team 22 of 2016/17 at Newcastle University!
 
