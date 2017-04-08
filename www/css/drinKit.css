@@ -243,13 +243,13 @@ html {
   background: rgba(3, 89, 127, 0.25) -webkit-linear-gradient(top, rgba(20, 106, 144, 0.25), rgba(0, 67, 96, 0.25));
   border-radius: 3px;
 }
-.drink-settings input,
+.drink-settings [type="text"],
 .drink-settings textarea {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
-.drink-settings input {
+.drink-settings [type="text"] {
   height: 27px;
 }
 .drink-settings .option-area {
@@ -280,15 +280,21 @@ html {
 .drink-footer .button {
   margin-left: 10px;
 }
-.ingredients-list {
+.ingredients-list,
+.equipment-list,
+.steps-list {
   position: absolute;
   width: 150px;
   height: 100%;
 }
-.ingredients-list p {
+.ingredients-list p,
+.equipment-list p,
+.steps-list p {
   margin: 5px;
 }
-.ingredients-list .list {
+.ingredients-list .list,
+.equipment-list .list,
+.steps-list .list {
   background-color: rgba(28, 189, 237, 0.25);
   position: absolute;
   top: 30px;
@@ -296,12 +302,27 @@ html {
   bottom: 5px;
   left: 5px;
 }
-.ingredients-list .list .button {
+.ingredients-list .list .button,
+.equipment-list .list .button,
+.steps-list .list .button {
   display: inline-block;
   width: 48%;
   position: absolute;
   bottom: 0;
 }
-.ingredients-list .list .button:last-of-type {
+.ingredients-list .list .button:last-of-type,
+.equipment-list .list .button:last-of-type,
+.steps-list .list .button:last-of-type {
   left: 52%;
+}
+.ingredient-info {
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  bottom: 0px;
+  left: 160px;
+}
+.skill,
+.flag {
+  display: inline-block;
 }

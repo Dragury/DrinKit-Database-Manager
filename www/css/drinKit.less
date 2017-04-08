@@ -277,12 +277,12 @@ html {
   .position(130px, 5px, 57px, 5px);
   background: fade(@drinKitDarkBlue - #333, @transparency) -webkit-linear-gradient(top, fade(@drinKitDarkBlue - #222, @transparency), fade(@drinKitDarkBlue - #444, @transparency));
   border-radius: 3px;
-  input, textarea {
+  [type="text"], textarea {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
   }
-  input {
+  [type="text"] {
     height: 27px;
   }
   .option-area {
@@ -313,7 +313,7 @@ html {
   }
 }
 
-.ingredients-list {
+.ingredients-list, .equipment-list, .steps-list {
   position: absolute;
   width: 150px;
   height: 100%;
@@ -333,4 +333,10 @@ html {
       }
     }
   }
+}
+.ingredient-info {
+  .position(5px, 0px, 0px, 160px);
+}
+.skill, .flag {
+  display: inline-block;
 }

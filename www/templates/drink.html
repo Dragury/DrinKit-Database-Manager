@@ -32,9 +32,7 @@
             <br/>
             <span style="display: inline-block">Type</span>
             <br/>
-            <select name="drink-type" class="form-control" ng-options="type.Name for type in types"
-                    ng-model="$root.drinkType">
-            </select>
+            <select class="form-control" ng-options="type.Name for type in types" ng-model="$root.drinkType"></select>
             <br/>
             <br/>
             <span style="display: inline-block">Image</span>
@@ -67,7 +65,80 @@
                 </div>
             </div>
             <div class="ingredient-info">
-
+                <span>Ingredient</span>
+                <br />
+                <select ></select>
+                <br />
+                <br />
+                <span>Measurement Catagory</span>
+                <br />
+                <select ></select>
+                <br />
+                <br />
+                <span>Measurement</span>
+                <br />
+                <select></select>
+                <br />
+                <br />
+                <span>Amount</span>
+                <br />
+                <input type="number">
+            </div>
+        </div>
+        <div class="option-area equpiment-area" ng-show="tab=='equipment'">
+            <div class="equipment-list">
+                <p>Equipment</p>
+                <div class="list">
+                    <div class="contents">
+                        <div class="equipment" ng-repeat="equipment in Equipment">
+                            {{equipment.Name}}
+                        </div>
+                    </div>
+                    <div class="button">
+                        +
+                    </div>
+                    <div class="button">
+                        -
+                    </div>
+                </div>
+            </div>
+            <div class="ingredient-info">
+                <span>Equipment</span>
+                <br />
+                <select ></select>
+            </div>
+        </div>
+        <div class="option-area steps-area" ng-show="tab=='steps'">
+            <div class="steps-list">
+                <p>Steps</p>
+                <div class="list">
+                    <div class="contents">
+                        <div class="step" ng-repeat="step in Steps">
+                            Step {{$index + 1}}
+                        </div>
+                    </div>
+                    <div class="button">
+                        +
+                    </div>
+                    <div class="button">
+                        -
+                    </div>
+                </div>
+            </div>
+            <div class="ingredient-info">
+                <span>Step</span>
+                <br />
+                <textarea ></textarea>
+            </div>
+        </div>
+        <div class="option-area steps-area" ng-show="tab=='skills'">
+            <div class="skill">
+                <input type="checkbox">Muddling
+            </div>
+        </div>
+        <div class="option-area steps-area" ng-show="tab=='flags'">
+            <div class="flag">
+                <input type="checkbox">Alcoholic
             </div>
         </div>
     </div>
