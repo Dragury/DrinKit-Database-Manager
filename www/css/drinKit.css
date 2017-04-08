@@ -4,7 +4,7 @@
 }
 html {
   position: absolute;
-  font-family: "PT Sans", sans-serif;
+  font-family: system-ui, sans-serif;
   background: -webkit-radial-gradient(center, circle, #1CBDED, #368CB2);
   width: 100%;
   height: 100%;
@@ -46,12 +46,12 @@ html {
   z-index: 2;
 }
 .login-door-top {
-  top: 0px;
+  top: 0;
   background: -webkit-radial-gradient(bottom, circle, #1CBDED, #368CB2);
   z-index: 3;
 }
 .login-door-bottom {
-  bottom: 0px;
+  bottom: 0;
   background: -webkit-radial-gradient(top, circle, #1CBDED, #368CB2);
 }
 .max {
@@ -120,6 +120,14 @@ html {
 .button-filter-off:hover {
   background: #a0341e -webkit-linear-gradient(top, #b1452f, #8f230d);
 }
+.button-active-view {
+  color: #EEEEEE;
+  background: #1CBDED -webkit-linear-gradient(top, #1CBDED, #009bcb);
+  border-color: #0079a9;
+}
+.button-active-view:hover {
+  background: #1CBDED -webkit-linear-gradient(top, #2dcefe, #0bacdc);
+}
 .login-button {
   float: right;
   margin-top: 5px;
@@ -163,7 +171,7 @@ html {
   padding: 10px 10px 0 10px;
 }
 .drink-box a > div .ingredients {
-  padding-top: 0px;
+  padding-top: 0;
   font-style: italic;
   color: #555;
   font-size: 10px;
@@ -202,11 +210,98 @@ html {
   height: 100px;
 }
 .drinks-area {
-  position: absolute;
   padding: 0 10px 0 10px;
   overflow-y: auto;
-  bottom: 0;
+  position: absolute;
   top: 59px;
-  left: 0;
   right: 0;
+  bottom: 0;
+  left: 0;
+}
+.drink-header {
+  height: 120px;
+}
+.drink-header img {
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  width: 100px;
+  height: auto;
+}
+.drink-header h1 {
+  position: absolute;
+  top: 30px;
+  left: 150px;
+}
+.drink-settings {
+  padding: 10px;
+  position: absolute;
+  top: 130px;
+  right: 5px;
+  bottom: 57px;
+  left: 5px;
+  background: rgba(3, 89, 127, 0.25) -webkit-linear-gradient(top, rgba(20, 106, 144, 0.25), rgba(0, 67, 96, 0.25));
+  border-radius: 3px;
+}
+.drink-settings input,
+.drink-settings textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.drink-settings input {
+  height: 27px;
+}
+.drink-settings .option-area {
+  position: absolute;
+  top: 47px;
+  right: 5px;
+  bottom: 5px;
+  left: 5px;
+  overflow-y: auto;
+}
+.drink-settings table {
+  width: 100%;
+}
+.drink-settings table td:last-child {
+  width: 100px;
+}
+.drink-settings table td:last-child .button {
+  width: 100%;
+}
+.navigation-buttons > .button {
+  display: inline-block;
+}
+.drink-footer {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+.drink-footer .button {
+  margin-left: 10px;
+}
+.ingredients-list {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+}
+.ingredients-list p {
+  margin: 5px;
+}
+.ingredients-list .list {
+  background-color: rgba(28, 189, 237, 0.25);
+  position: absolute;
+  top: 30px;
+  right: 5px;
+  bottom: 5px;
+  left: 5px;
+}
+.ingredients-list .list .button {
+  display: inline-block;
+  width: 48%;
+  position: absolute;
+  bottom: 0;
+}
+.ingredients-list .list .button:last-of-type {
+  left: 52%;
 }

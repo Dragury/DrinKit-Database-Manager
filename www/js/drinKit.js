@@ -99,7 +99,7 @@ dKDBMApp.controller('loginController', function ($scope, $timeout, $document, $l
     }
 
 
-}).controller('drinkController', function ($scope, $routeParams, $document) {
+}).controller('drinkController', function ($scope, $routeParams, $document, $rootScope) {
     $document.ready(fadeViewIn);
     $scope.drink = {
         newImage: "No new image selected."
@@ -122,12 +122,13 @@ dKDBMApp.controller('loginController', function ($scope, $timeout, $document, $l
             Name: "Milkshake"
         }
     ];
+    $rootScope.drinkType = $scope.types[0];
     $scope.tab = "general";
     $scope.goToTab = function (target) {
         var oldTab = '.' + $scope.tab;
         var newTab = '.' + target;
-        $(oldTab).removeClass("active");
-        $(newTab).addClass("active");
+        $(oldTab).removeClass("button-active-view");
+        $(newTab).addClass("button-active-view");
         $scope.tab = target;
     }
 }).controller('appController', function ($scope, $location) {

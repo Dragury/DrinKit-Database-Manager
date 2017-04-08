@@ -1,86 +1,81 @@
 <div class="view-wrapper">
-    <div>
+    <div class="drink-header">
         <img src="http://46.101.52.91/drinKit/images/PlaceHolder.png">
         <h1>
             Drink Name Goes Here
         </h1>
-        <a>
-            <i class="glyphicon glyphicon-wrench"></i>
-        </a>
     </div>
-    <div>
-        <div>
-            <button type="button" ng-click="goToTab('general')">General</button>
-            <button type="button" ng-click="goToTab('ingredients')">Ingredients
-            </button>
-            <button type="button" ng-click="goToTab('equipment')">Equipment</button>
-            <button type="button" ng-click="goToTab('steps')">Steps</button>
-            <button type="button" ng-click="goToTab('skills')">Skills</button>
-            <button type="button" ng-click="goToTab('flags')">Flags</button>
+    <div class="drink-settings">
+        <div class="navigation-buttons">
+            <div class="button general button-active-view" ng-click="goToTab('general')">General</div>
+            <div class="button ingredients" ng-click="goToTab('ingredients')">Ingredients</div>
+            <div class="button equipment" ng-click="goToTab('equipment')">Equipment</div>
+            <div class="button steps" ng-click="goToTab('steps')">Steps</div>
+            <div class="button skills" ng-click="goToTab('skills')">Skills</div>
+            <div class="button flags" ng-click="goToTab('flags')">Flags</div>
         </div>
         <div class="option-area general-area" ng-show="tab=='general'">
             <span>Name</span>
-            <input type="text" class="form-control" placeholder="Example Drink" aria-describedby="drink-name">
+            <br/>
+            <input type="text" placeholder="Drink Name">
+            <br/>
             <br/>
             <span>Flavour Text</span>
-            <textarea class="form-control flavour-text" placeholder="Tasty and delicious!"
-                      aria-describedby="drink-name"></textarea>
+            <br/>
+            <textarea class="flavour-text" placeholder="Flavour Text for the search screen."></textarea>
+            <br/>
             <br/>
             <span>Description</span>
-            <textarea class="form-control flavour-text"
-                      placeholder="Hailing from the quiet town of Brambleskovia the Example Drink is an example of a classic Ring of Fire cocktail. You will get #rekt."
-                      aria-describedby="drink-name"></textarea>
+            <br/>
+            <textarea class="flavour-text" placeholder="Drink Description for drink screen."></textarea>
+            <br/>
             <br/>
             <span style="display: inline-block">Type</span>
-            <select name="drink-type" class="form-control" style="display: inline-block;width:auto;">
-                <option value="{{type.ID}}" ng-repeat="type in types">{{type.Name}}</option>
+            <br/>
+            <select name="drink-type" class="form-control" ng-options="type.Name for type in types"
+                    ng-model="$root.drinkType">
             </select>
             <br/>
             <br/>
             <span style="display: inline-block">Image</span>
-
-            <span></span>
-            <div class="input-group">
-                <input type="text" class="form-control image-path" ng-value="drink.newImage" disabled
-                       aria-describedby="browse-button">
-                <a class="input-group-addon btn btn-primary browse-button" id="browse-button">Browse</a>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" class="image-path" ng-value="drink.newImage" disabled>
+                    </td>
+                    <td>
+                        <div class="button" id="browse-button">Browse</div>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="option-area ingredients-area" ng-show="tab=='ingredients'">
-            <span>Name</span>
-            <input type="text" class="form-control" placeholder="Example Drink" aria-describedby="drink-name">
-            <br/>
-            <span>Flavour Text</span>
-            <textarea class="form-control flavour-text" placeholder="Tasty and delicious!"
-                      aria-describedby="drink-name"></textarea>
-            <br/>
-            <span>Description</span>
-            <textarea class="form-control flavour-text"
-                      placeholder="Hailing from the quiet town of Brambleskovia the Example Drink is an example of a classic Ring of Fire cocktail. You will get #rekt."
-                      aria-describedby="drink-name"></textarea>
-            <br/>
-            <span style="display: inline-block">Type</span>
-            <select name="drink-type" class="form-control" style="display: inline-block;width:auto;">
-                <option value="{{type.ID}}" ng-repeat="type in types">{{type.Name}}</option>
-            </select>
-            <br/>
-            <br/>
-            <span style="display: inline-block">Image</span>
+            <div class="ingredients-list">
+                <p>Ingredients</p>
+                <div class="list">
+                    <div class="contents">
+                        <div class="ingredient" ng-repeat="ingredient in Ingredients">
+                            {{ingredient.Name}} <br/> {{ingredient.Amount}}
+                        </div>
+                    </div>
+                    <div class="button">
+                        +
+                    </div>
+                    <div class="button">
+                        -
+                    </div>
+                </div>
+            </div>
+            <div class="ingredient-info">
 
-            <span></span>
-            <div class="input-group">
-                <input type="text" class="form-control image-path" ng-value="drink.newImage" disabled
-                       aria-describedby="browse-button">
-                <a class="input-group-addon btn btn-primary browse-button" id="browse-button">Browse</a>
             </div>
         </div>
-
     </div>
-    <div>
-        <a>
+    <div class="drink-footer">
+        <a class="button">
             Cancel
         </a>
-        <a>
+        <a class="button button-active-view">
             Submit
         </a>
     </div>

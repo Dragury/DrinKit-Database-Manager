@@ -18,6 +18,26 @@
   padding: 0;
 }
 
+.position(@top, @right, @dl) {
+  .position(@top, @right, @dl, @dl);
+}
+
+.position(@vert, @horiz) {
+  .position(@vert, @horiz, @vert, @horiz);
+}
+
+.position(@distance) {
+  .position(@distance, @distance);
+}
+
+.position(@top, @right, @bottom, @left) {
+  position: absolute;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+  left: @left;
+}
+
 @font-face {
   font-family: 'PT Sans';
   src: url(@drinKitFont);
@@ -25,7 +45,7 @@
 
 html {
   position: absolute;
-  font-family: "PT Sans", sans-serif;
+  font-family: system-ui, sans-serif;
   .radial(center, @drinKitLightBlue, @drinKitDarkBlue);
   .maxwh();
   overflow: hidden;
@@ -63,15 +83,13 @@ html {
 }
 
 .login-door-top {
-  //top: -150px;
-  top: 0px;
+  top: 0;
   .radial(bottom, @drinKitLightBlue, @drinKitDarkBlue);
   z-index: 3;
 }
 
 .login-door-bottom {
-  //bottom: -150px;
-  bottom: 0px;
+  bottom: 0;
   .radial(top, @drinKitLightBlue, @drinKitDarkBlue);
 }
 
@@ -146,6 +164,15 @@ html {
   }
 }
 
+.button-active-view {
+  color: #EEEEEE;
+  background: @drinKitLightBlue -webkit-linear-gradient(top, @drinKitLightBlue, @drinKitLightBlue - #222);
+  border-color: @drinKitLightBlue - #444;
+  &:hover {
+    background: @drinKitLightBlue -webkit-linear-gradient(top, @drinKitLightBlue + #111, @drinKitLightBlue - #111);
+  }
+}
+
 .login-button {
   float: right;
   margin-top: 5px;
@@ -188,7 +215,7 @@ html {
       padding: 10px 10px 0 10px;
     }
     .ingredients {
-      padding-top: 0px;
+      padding-top: 0;
       font-style: italic;
       color: #555;
       font-size: 10px;
@@ -223,11 +250,87 @@ html {
 }
 
 .drinks-area {
-  position: absolute;
   padding: 0 10px 0 10px;
   overflow-y: auto;
-  bottom: 0;
-  top: 59px;
-  left:0;
-  right: 0;
+  .position(59px, 0, 0);
+}
+
+.drink-header {
+  height: 120px;
+  img {
+    position: absolute;
+    left: 30px;
+    top: 10px;
+    width: 100px;
+    height: auto;
+  }
+  h1 {
+    position: absolute;
+    top: 30px;
+    left: 150px;
+  }
+}
+
+.drink-settings {
+  @transparency: 25%;
+  padding: 10px;
+  .position(130px, 5px, 57px, 5px);
+  background: fade(@drinKitDarkBlue - #333, @transparency) -webkit-linear-gradient(top, fade(@drinKitDarkBlue - #222, @transparency), fade(@drinKitDarkBlue - #444, @transparency));
+  border-radius: 3px;
+  input, textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  input {
+    height: 27px;
+  }
+  .option-area {
+    .position(47px, 5px, 5px);
+    overflow-y: auto;
+  }
+  table {
+    width: 100%;
+    td:last-child {
+      width: 100px;
+      .button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.navigation-buttons > .button {
+  display: inline-block;
+}
+
+.drink-footer {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  .button {
+    margin-left: 10px;
+  }
+}
+
+.ingredients-list {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  p {
+    margin: 5px;
+  }
+  .list {
+    background-color: fade(@drinKitLightBlue, 25%);
+    .position(30px, 5px, 5px);
+    .button {
+      display: inline-block;
+      width: 48%;
+      position: absolute;
+      bottom:0;
+      &:last-of-type {
+        left: 52%;
+      }
+    }
+  }
 }
