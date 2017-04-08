@@ -124,8 +124,10 @@ dKDBMApp.controller('loginController', function ($scope, $timeout, $document, $l
     ];
     $scope.tab = "general";
     $scope.goToTab = function (target) {
-        $('.' + $scope.tab).removeClass("active");
-        $('.' + target).addClass("active");
+        var oldTab = '.' + $scope.tab;
+        var newTab = '.' + target;
+        $(oldTab).removeClass("active");
+        $(newTab).addClass("active");
         $scope.tab = target;
     }
 }).controller('appController', function ($scope, $location) {
