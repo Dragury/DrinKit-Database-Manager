@@ -177,12 +177,12 @@ html {
   padding: 10px;
   margin: 0;
 }
-@media all and (max-width: 767px) {
+@media all and (max-width: 800px) {
   .drink-box {
     width: 100%;
   }
 }
-@media all and (min-width: 768px) {
+@media all and (min-width: 801px) {
   .drink-box {
     width: 50%;
   }
@@ -190,6 +190,11 @@ html {
 @media all and (min-width: 1200px) {
   .drink-box {
     width: 33.333%;
+  }
+}
+@media all and (min-width: 1800px) {
+  .drink-box {
+    width: 25%;
   }
 }
 .drink-box img {
