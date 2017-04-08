@@ -1,6 +1,8 @@
 @drinKitLightBlue: #1CBDED;
 @drinKitDarkBlue: #368CB2;
 @drinKitButtonBackground: #FCFCFC;
+@drinKitFilterGreen: #63a045;
+@drinKitFilterRed: #a0341e;
 @drinKitForm: #333;
 @drinKitFont: "fonts/PT_Sans.ttf";
 @logoSize: 200px;
@@ -99,13 +101,12 @@ html {
   position: relative;
   width: @inputWidth;
   left: -@inputWidth / 2;
-}
-
-.login-form-inputs input {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 2px;
-  margin: 4px 0;
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2px;
+    margin: 4px 0;
+  }
 }
 
 .button {
@@ -121,18 +122,109 @@ html {
   border-radius: 3px;
   color: black;
   background: @drinKitButtonBackground -webkit-linear-gradient(top, @drinKitButtonBackground, @drinKitButtonBackground - #222);
+  text-align: center;
+  &:hover {
+    background: @drinKitButtonBackground -webkit-linear-gradient(top, @drinKitButtonBackground + #111, @drinKitButtonBackground - #111);
+  }
 }
 
-.button:hover {
-  &:extend(.button);
-  background: @drinKitButtonBackground -webkit-linear-gradient(top, @drinKitButtonBackground + #111, @drinKitButtonBackground - #111);
+.button-filter-on {
+  color: #EEEEEE;
+  background: @drinKitFilterGreen -webkit-linear-gradient(top, @drinKitFilterGreen, @drinKitFilterGreen - #222);
+  border-color: @drinKitFilterGreen - #444;
+  &:hover {
+    background: @drinKitFilterGreen -webkit-linear-gradient(top, @drinKitFilterGreen + #111, @drinKitFilterGreen - #111);
+  }
+}
+
+.button-filter-off {
+  color: #EEEEEE;
+  background: @drinKitFilterRed -webkit-linear-gradient(top, @drinKitFilterRed, @drinKitFilterRed - #222);
+  border-color: @drinKitFilterRed - #444;
+  &:hover {
+    background: @drinKitFilterRed -webkit-linear-gradient(top, @drinKitFilterRed + #111, @drinKitFilterRed - #111);
+  }
 }
 
 .login-button {
   float: right;
   margin-top: 5px;
 }
+
 .view-wrapper {
   .maxwh;
-  opacity:0;
+  opacity: 0;
+}
+
+.filter-buttons {
+  margin-right: 40px;
+  li {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+  }
+}
+
+.reload {
+  float: right;
+  height: inherit;
+}
+
+.drink-box {
+  a > div {
+    @transparency: 25%;
+    position: relative;
+    margin: 3px 5px;
+    border-radius: 3px;
+    background: fade(@drinKitDarkBlue - #333, @transparency) -webkit-linear-gradient(top, fade(@drinKitDarkBlue - #222, @transparency), fade(@drinKitDarkBlue - #333, @transparency));
+    overflow: hidden;
+    .name {
+      position: absolute;
+      top: 0;
+      left: 110px;
+      font-size: 20px;
+    }
+    .description {
+      padding: 10px 10px 0 10px;
+    }
+    .ingredients {
+      padding-top: 0px;
+      font-style: italic;
+      color: #555;
+      font-size: 10px;
+    }
+    .drink-info {
+      position: relative;
+      margin-top: -5px;
+      background-color: #E2E2E2;
+    }
+    p {
+      padding: 10px;
+      margin: 0;
+    }
+  }
+  display: inline-block;
+  @media all and (max-width: 767px) {
+    width: 100%;
+  }
+  @media all and (min-width: 768px ) {
+    width: 50%;
+  }
+  @media all and (min-width: 1200px) {
+    width: 33.333%;
+  }
+  img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.drinks-area {
+  position: absolute;
+  padding: 0 10px 0 10px;
+  overflow-y: auto;
+  bottom: 0;
+  top: 59px;
+  left:0;
+  right: 0;
 }

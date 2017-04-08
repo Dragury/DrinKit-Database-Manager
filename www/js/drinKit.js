@@ -22,17 +22,17 @@ var dKDBMApp = angular.module('dKDBMApp', ['ngRoute', 'ngResource'])
         ).otherwise("/login");
     });
 
-dKDBMApp.controller('loginController', function($scope, $timeout, $document, $location){
+dKDBMApp.controller('loginController', function ($scope, $timeout, $document, $location) {
     $document.ready(fadeViewIn);
     $timeout(openDoors, 1000);
     $scope.test = "TEST";
     console.log("Doing ready");
-    $scope.doLogin = function(){
+    $scope.doLogin = function () {
         console.log("Doing login");
         closeDoors();
         $timeout(function () {
             var login = false;
-            if(true){
+            if (true) {
                 fadeView(false);
                 $timeout(function () {
                     $location.path("/drinks");
@@ -44,7 +44,7 @@ dKDBMApp.controller('loginController', function($scope, $timeout, $document, $lo
 
     }
 
-}).controller('drinksController', function ($scope, $location, $document) {
+}).controller('drinksController', function ($scope, $location, $document, $timeout) {
     $document.ready(fadeViewIn);
     $scope.drinks = [
         {
@@ -92,59 +92,62 @@ dKDBMApp.controller('loginController', function($scope, $timeout, $document, $lo
     ];
 
     $scope.goToDrink = function (id) {
-        $location.path("drink/"+id);
+        fadeView(false);
+        $timeout(function () {
+            $location.path("drink/" + id);
+        }, 1000);
     }
 
 
-}).controller('drinkController', function ($scope, $routeParams) {
+}).controller('drinkController', function ($scope, $routeParams, $document) {
     $document.ready(fadeViewIn);
     $scope.drink = {
-        newImage:"No new image selected."
+        newImage: "No new image selected."
     };
     $scope.types = [
         {
-            ID:1,
-            Name:"Cocktail"
+            ID: 1,
+            Name: "Cocktail"
         },
         {
-            ID:2,
-            Name:"Mocktail"
+            ID: 2,
+            Name: "Mocktail"
         },
         {
-            ID:3,
-            Name:"Smoothie"
+            ID: 3,
+            Name: "Smoothie"
         },
         {
-            ID:4,
-            Name:"Milkshake"
+            ID: 4,
+            Name: "Milkshake"
         }
     ];
     $scope.tab = "general";
     $scope.goToTab = function (target) {
-        $('.'+$scope.tab).removeClass("active");
-        $('.'+target).addClass("active");
+        $('.' + $scope.tab).removeClass("active");
+        $('.' + target).addClass("active");
         $scope.tab = target;
     }
 }).controller('appController', function ($scope, $location) {
     $location.path("login");
 });
 
-function openDoors(){
-    $(".login-door-top").animate({top:-150}, 1000, "easeInOutCubic");
-    $(".login-door-bottom").animate({bottom:-150}, 1000, "easeInOutCubic");
+function openDoors() {
+    $(".login-door-top").animate({top: -150}, 1000, "easeInOutCubic");
+    $(".login-door-bottom").animate({bottom: -150}, 1000, "easeInOutCubic");
 }
 
-function closeDoors(){
-    $(".login-door-top").animate({top:0}, 1000, "easeInOutCubic");
-    $(".login-door-bottom").animate({bottom:0}, 1000, "easeInOutCubic");
+function closeDoors() {
+    $(".login-door-top").animate({top: 0}, 1000, "easeInOutCubic");
+    $(".login-door-bottom").animate({bottom: 0}, 1000, "easeInOutCubic");
 }
-function fadeViewIn(){
+function fadeViewIn() {
     fadeView(true);
 }
-function fadeView(fadeIn){
-    if(fadeIn){
-        $(".view-wrapper").animate({opacity:1.0},1000);
+function fadeView(fadeIn) {
+    if (fadeIn) {
+        $(".view-wrapper").animate({opacity: 1.0}, 1000);
     } else {
-        $(".view-wrapper").animate({opacity:0.0},1000);
+        $(".view-wrapper").animate({opacity: 0.0}, 1000);
     }
 }
