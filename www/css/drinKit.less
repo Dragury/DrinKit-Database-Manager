@@ -45,7 +45,7 @@
 
 html {
   position: absolute;
-  font-family: system-ui, sans-serif;
+  font-family: 'PT Sans', sans-serif;
   .radial(center, @drinKitLightBlue, @drinKitDarkBlue);
   .maxwh();
   overflow: hidden;
@@ -195,6 +195,10 @@ html {
 .reload {
   float: right;
   height: inherit;
+  img {
+    margin: -2px;
+    vertical-align: text-bottom;
+  }
 }
 
 .drink-box {
@@ -285,6 +289,9 @@ html {
   [type="text"] {
     height: 27px;
   }
+  textarea {
+    min-height: 50px;
+  }
   .option-area {
     .position(47px, 5px, 5px);
     overflow-y: auto;
@@ -335,7 +342,7 @@ html {
   }
 }
 .ingredient-info {
-  .position(5px, 0px, 0px, 160px);
+  .position(30px, 0px, 0px, 160px);
 }
 .skill, .flag {
   display: inline-block;
