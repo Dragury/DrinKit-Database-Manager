@@ -1,8 +1,12 @@
 /**
  * Created by elliot on 29/03/2017.
+ *
+ * The behaviour for the tool
  */
 
-var dKDBMApp = angular.module('dKDBMApp', ['ngRoute', 'ngResource'])
+let authKey = "";
+
+let dKDBMApp = angular.module('dKDBMApp', ['ngRoute', 'ngResource'])
     .config(function ($routeProvider) {
         $routeProvider.when(
             "/login", {
@@ -25,78 +29,75 @@ var dKDBMApp = angular.module('dKDBMApp', ['ngRoute', 'ngResource'])
 dKDBMApp.controller('loginController', function ($scope, $timeout, $document, $location) {
     $document.ready(fadeViewIn);
     $timeout(openDoors, 1000);
-    $scope.test = "TEST";
-    console.log("Doing ready");
     $scope.doLogin = function () {
-        console.log("Doing login");
         closeDoors();
+        let userbox = $("#username-box");
+        let passbox = $("#password-box");
         $timeout(function () {
-            var login = false;
-            if (true) {
-                fadeView(false);
-                $timeout(function () {
-                    $location.path("/drinks");
-                }, 1000);
-            } else {
+            let username = userbox.val();
+            let password = passbox.val();
+            passbox.val("");
+            $.post(
+                "https://drinkit.pro/api/auth",
+                {
+                    USER: username,
+                    PASS: password
+                }, function () {
+                    console.log("YAY");
+                }).done(
+                function (data) {
+                    authKey = data;
+                    fadeView(false);
+                    $timeout(function () {
+                        $location.path("/drinks");
+                    }, 1000);
+                }
+            ).fail(function () {
+                userbox.addClass("failed");
+                passbox.addClass("failed");
                 openDoors();
-            }
+            });
         }, 1200);
 
-    }
+    };
 
 }).controller('drinksController', function ($scope, $location, $document, $timeout) {
     $document.ready(fadeViewIn);
-    $scope.drinks = [
-        {
-            name: 'Drink 1',
-            id: 1,
-            description: 'This is drink 1',
-            url: 'http://46.101.52.91/drinKit/images/13.png'
-        },
-        {
-            name: 'Drink 2',
-            id: 2,
-            description: 'This is drink 2',
-            url: 'http://46.101.52.91/drinKit/images/13.png'
-        },
-        {
-            name: 'Drink 3',
-            id: 3,
-            description: 'This is drink 3',
-            url: 'http://46.101.52.91/drinKit/images/13.png'
-        },
-        {
-            name: 'Drink 4',
-            id: 4,
-            description: 'This is drink 4',
-            url: 'http://46.101.52.91/drinKit/images/13.png'
-        },
-        {
-            name: 'Drink 5',
-            id: 5,
-            description: 'This is drink 5',
-            url: 'http://46.101.52.91/drinKit/images/13.png'
-        },
-        {
-            name: 'Drink 6',
-            id: 6,
-            description: 'This is drink 6',
-            url: 'http://46.101.52.91/drinKit/images/13.png'
-        },
-        {
-            name: 'Drink 7',
-            id: 7,
-            description: 'This is drink 7',
-            url: 'http://46.101.52.91/drinKit/images/13.png'
-        }
-    ];
+    $scope.drinks = [];
+    $(".drinks").isotope();
+
+    $scope.reload = function () {
+        $.get(
+            "https://drinkit.pro/api/drink"
+        ).done(function (data) {
+            $scope.drinks = data;
+            for (let i = 0; i < $scope.drinks.length; i++) {
+                addURL(i);
+            }
+            $scope.$apply();
+            let drinks = $(".drinks");
+                drinks.isotope('destroy');
+                drinks.isotope();
+        });
+    };
+
+    function addURL(i) {
+        $.get(
+            "https://drinkit.pro/api/drink/image/" + $scope.drinks[i].ID
+        ).done(function (data) {
+            $scope.drinks[i].URL = data;
+            $scope.$apply();
+        });
+    }
 
     $scope.goToDrink = function (id) {
         fadeView(false);
         $timeout(function () {
             $location.path("drink/" + id);
         }, 1000);
-    }
+    };
+
+    $scope.reload();
 
 
 }).controller('drinkController', function ($scope, $routeParams, $document, $rootScope) {
@@ -125,12 +126,12 @@ dKDBMApp.controller('loginController', function ($scope, $timeout, $document, $l
     $rootScope.drinkType = $scope.types[0];
     $scope.tab = "general";
     $scope.goToTab = function (target) {
-        var oldTab = '.' + $scope.tab;
-        var newTab = '.' + target;
+        let oldTab = '.' + $scope.tab;
+        let newTab = '.' + target;
         $(oldTab).removeClass("button-active-view");
         $(newTab).addClass("button-active-view");
         $scope.tab = target;
-    }
+    };
 }).controller('appController', function ($scope, $location) {
     $location.path("login");
 });

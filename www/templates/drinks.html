@@ -21,7 +21,7 @@
             </div>
         </li>
         <li class="reload">
-            <div class="button">
+            <div class="button" ng-click="reload()">
                 Reload
                 <img src="img/reload.png">
             </div>
@@ -29,24 +29,25 @@
 
     </ul>
     <div class="drinks-area">
-        <div ng-repeat="drink in drinks" class="drink-box">
-            <a ng-click="goToDrink(drink.id)">
-                <div>
-                    <img src="{{drink.url}}">
-                    <h1 class="name">{{drink.name}}</h1>
-                    <div class="drink-info">
-                        <p class="description"><strong>{{drink.description}}</strong></p>
-                        <p class="ingredients">Rum, Coke, More Rum, More Coke</p>
+        <div class="drinks">
+            <div ng-repeat="drink in drinks" class="drink-box">
+                <a ng-click="goToDrink(drink.ID)">
+                    <div>
+                        <img src="{{drink.URL}}">
+                        <h1 class="name">{{drink.Name}}</h1>
+                        <div class="drink-info">
+                            <p class="description"><strong>{{drink.Description}}</strong></p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-        <div>
-            <a ng-click="goToDrink(0)">
-                <div class="drink-box new-drink-button">
-                    <i class="glyphicon glyphicon-plus text-muted"></i>
-                </div>
-            </a>
+                </a>
+            </div>
+            <div class="drink-box">
+                <a ng-click="goToDrink(0)">
+                    <div class="drink-box new-drink-button">
+                        <i class="glyphicon glyphicon-plus text-muted"></i>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </div>

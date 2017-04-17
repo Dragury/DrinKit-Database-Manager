@@ -87,6 +87,10 @@ html {
   padding: 2px;
   margin: 4px 0;
 }
+.login-form-inputs .failed {
+  background-color: #FFAAAA;
+  border-color: #FF7777;
+}
 .button {
   cursor: default;
   user-select: none;
@@ -155,9 +159,6 @@ html {
   margin: -2px;
   vertical-align: text-bottom;
 }
-.drink-box {
-  display: inline-block;
-}
 .drink-box a > div {
   position: relative;
   margin: 3px 5px;
@@ -167,12 +168,12 @@ html {
 }
 .drink-box a > div .name {
   position: absolute;
-  top: 0;
+  top: 15px;
   left: 110px;
   font-size: 20px;
 }
 .drink-box a > div .description {
-  padding: 10px 10px 0 10px;
+  padding: 10px;
 }
 .drink-box a > div .ingredients {
   padding-top: 0;

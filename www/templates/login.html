@@ -9,8 +9,8 @@
             <div class="login-form">
                 <div class="center-dot">
                     <div class="login-form-inputs">
-                        <input type="text" placeholder="Username">
-                        <input type="password" placeholder="Password">
+                            <input ng-keyup="$event.keyCode == 13 && doLogin()" id="username-box" type="text" placeholder="Username">
+                            <input ng-keyup="$event.keyCode == 13 && doLogin()" id="password-box" type="password" placeholder="Password">
                         <a ng-click="doLogin()" class="button login-button">
                             Login
                         </a>
