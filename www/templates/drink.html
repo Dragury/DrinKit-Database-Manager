@@ -1,8 +1,8 @@
 <div class="view-wrapper">
     <div class="drink-header">
-        <img src="http://46.101.52.91/drinKit/images/PlaceHolder.png">
+        <img src="{{drink.URL}}">
         <h1>
-            Drink Name Goes Here
+            {{drink.Name}}
         </h1>
     </div>
     <div class="drink-settings">
@@ -17,22 +17,22 @@
         <div class="option-area general-area" ng-show="tab=='general'">
             <span>Name</span>
             <br/>
-            <input type="text" placeholder="Drink Name">
+            <input type="text" placeholder="Drink Name" ng-model="drink.Name">
             <br/>
             <br/>
             <span>Flavour Text</span>
             <br/>
-            <textarea class="flavour-text" placeholder="Flavour Text for the search screen."></textarea>
+            <textarea class="flavour-text" placeholder="Flavour Text for the search screen." ng-model="drink.FlavourText"></textarea>
             <br/>
             <br/>
             <span>Description</span>
             <br/>
-            <textarea class="flavour-text" placeholder="Drink Description for drink screen."></textarea>
+            <textarea class="flavour-text" placeholder="Drink Description for drink screen." ng-model="drink.Description"></textarea>
             <br/>
             <br/>
             <span style="display: inline-block">Type</span>
             <br/>
-            <select class="form-control" ng-options="type.Name for type in types" ng-model="$root.drinkType"></select>
+            <select class="form-control" ng-options="t as t.Text for t in $root.types" ng-model="type"></select>
             <br/>
             <br/>
             <span style="display: inline-block">Image</span>
@@ -113,7 +113,7 @@
                 <p>Steps</p>
                 <div class="list">
                     <div class="contents">
-                        <div class="step" ng-repeat="step in Steps">
+                        <div class="step" ng-repeat="step in steps">
                             Step {{$index + 1}}
                         </div>
                     </div>
@@ -143,7 +143,7 @@
         </div>
     </div>
     <div class="drink-footer">
-        <a class="button">
+        <a class="button" ng-click="goBack()">
             Cancel
         </a>
         <a class="button button-active-view">

@@ -26,113 +26,128 @@ let dKDBMApp = angular.module('dKDBMApp', ['ngRoute', 'ngResource'])
         ).otherwise("/login");
     });
 
-dKDBMApp.controller('loginController', function ($scope, $timeout, $document, $location) {
-    $document.ready(fadeViewIn);
-    $timeout(openDoors, 1000);
-    $scope.doLogin = function () {
-        closeDoors();
-        let userbox = $("#username-box");
-        let passbox = $("#password-box");
-        $timeout(function () {
-            let username = userbox.val();
-            let password = passbox.val();
-            passbox.val("");
-            $.post(
-                "https://drinkit.pro/api/auth",
-                {
-                    USER: username,
-                    PASS: password
-                }, function () {
-                    console.log("YAY");
-                }).done(
-                function (data) {
-                    authKey = data;
-                    fadeView(false);
-                    $timeout(function () {
-                        $location.path("/drinks");
-                    }, 1000);
+dKDBMApp
+    .controller('loginController', function ($scope, $timeout, $document, $location, $rootScope) {
+        $document.ready(fadeViewIn);
+        $timeout(openDoors, 1000);
+        $scope.doLogin = function () {
+            closeDoors();
+            let userbox = $("#username-box");
+            let passbox = $("#password-box");
+            $timeout(function () {
+                let username = userbox.val();
+                let password = passbox.val();
+                passbox.val("");
+                $.post(
+                    "https://drinkit.pro/api/auth",
+                    {
+                        USER: username,
+                        PASS: password
+                    }, function () {
+                    }).done(
+                    function (data) {
+                        authKey = data;
+                        fadeView(false);
+                        $.get("https://drinkit.pro/api/type").done(function (data) {
+                            $rootScope.types = data;
+                        });
+                        $timeout(function () {
+                            $location.path("/drinks");
+                        }, 1000);
+                    }
+                ).fail(function () {
+                    userbox.addClass("failed");
+                    passbox.addClass("failed");
+                    openDoors();
+                });
+            }, 1200);
+
+        };
+
+    })
+
+    .controller('drinksController', function ($scope, $location, $document, $timeout, $rootScope) {
+        $document.ready(fadeViewIn);
+        $rootScope.drinks = [];
+        $(".drinks").isotope();
+
+        $scope.reload = function () {
+            $.get(
+                "https://drinkit.pro/api/drink"
+            ).done(function (data) {
+                $rootScope.drinks = data;
+                for (let i = 0; i < $rootScope.drinks.length; i++) {
+                    addURL(i);
                 }
-            ).fail(function () {
-                userbox.addClass("failed");
-                passbox.addClass("failed");
-                openDoors();
-            });
-        }, 1200);
-
-    };
-
-}).controller('drinksController', function ($scope, $location, $document, $timeout) {
-    $document.ready(fadeViewIn);
-    $scope.drinks = [];
-    $(".drinks").isotope();
-
-    $scope.reload = function () {
-        $.get(
-            "https://drinkit.pro/api/drink"
-        ).done(function (data) {
-            $scope.drinks = data;
-            for (let i = 0; i < $scope.drinks.length; i++) {
-                addURL(i);
-            }
-            $scope.$apply();
-            let drinks = $(".drinks");
+                $scope.$apply();
+                let drinks = $(".drinks");
                 drinks.isotope('destroy');
                 drinks.isotope();
-        });
-    };
+            });
+        };
 
-    function addURL(i) {
-        $.get(
-            "https://drinkit.pro/api/drink/image/" + $scope.drinks[i].ID
-        ).done(function (data) {
-            $scope.drinks[i].URL = data;
-            $scope.$apply();
-        });
-    }
-
-    $scope.goToDrink = function (id) {
-        fadeView(false);
-        $timeout(function () {
-            $location.path("drink/" + id);
-        }, 1000);
-    };
-
-    $scope.reload();
-
-
-}).controller('drinkController', function ($scope, $routeParams, $document, $rootScope) {
-    $document.ready(fadeViewIn);
-    $scope.drink = {
-        newImage: "No new image selected."
-    };
-    $scope.types = [
-        {
-            ID: 1,
-            Name: "Cocktail"
-        },
-        {
-            ID: 2,
-            Name: "Mocktail"
-        },
-        {
-            ID: 3,
-            Name: "Smoothie"
-        },
-        {
-            ID: 4,
-            Name: "Milkshake"
+        function addURL(i) {
+            $.get(
+                "https://drinkit.pro/api/drink/image/" + $rootScope.drinks[i].ID
+            ).done(function (data) {
+                $rootScope.drinks[i].URL = data;
+                $scope.$apply();
+            });
         }
-    ];
-    $rootScope.drinkType = $scope.types[0];
-    $scope.tab = "general";
-    $scope.goToTab = function (target) {
-        let oldTab = '.' + $scope.tab;
-        let newTab = '.' + target;
-        $(oldTab).removeClass("button-active-view");
-        $(newTab).addClass("button-active-view");
-        $scope.tab = target;
-    };
-}).controller('appController', function ($scope, $location) {
+
+        $scope.goToDrink = function (id) {
+            fadeView(false);
+            $timeout(function () {
+                $location.path("drink/" + id);
+            }, 1000);
+        };
+
+        $scope.reload();
+
+
+    })
+
+    .controller('drinkController', function ($scope, $routeParams, $document, $rootScope, $location, $timeout) {
+
+        $scope.goBack = function () {
+            fadeView();
+            $timeout(function () {
+                $location.path("drinks/")
+            }, 1000);
+        };
+
+
+        $document.ready(function () {
+            for (let i = 0; i < $rootScope.drinks.length; i++) {
+                if ($rootScope.drinks[i].ID == $routeParams.id) {
+                    $scope.drink = $rootScope.drinks[i];
+                    console.log($scope.drink);
+                    $scope.drink.newImage = "No new image selected.";
+                    break;
+                }
+            }
+            for(let i = 0; i < $rootScope.types.length; i++){
+                if($rootScope.types[i].ID == $scope.drink.DrinkTypeID ){
+                    $scope.type = $rootScope.types[i];
+                    break;
+                }
+            }
+            $.get("https://drinkit.pro/api/drink/"+$scope.drink.ID+"/step").done(function(data){
+                $scope.steps = data;
+                $scope.$apply();
+            });
+            $scope.$apply();
+            fadeViewIn();
+        });
+        $scope.tab = "general";
+        $scope.goToTab = function (target) {
+            let oldTab = '.' + $scope.tab;
+            let newTab = '.' + target;
+            $(oldTab).removeClass("button-active-view");
+            $(newTab).addClass("button-active-view");
+            $scope.tab = target;
+        };
+    }).controller('appController', function ($scope, $location) {
     $location.path("login");
 });
 
