@@ -52,14 +52,14 @@
                 <p>Ingredients</p>
                 <div class="list">
                     <div class="contents">
-                        <div class="ingredient" ng-repeat="ingredient in Ingredients">
-                            {{ingredient.Name}} <br/> {{ingredient.Amount}}
+                        <div ng-hide="ingredient.Method == 'DELETE'" class="item" ng-repeat="ingredient in ingredients" ng-click="selectIngredient($index)">
+                            {{ingredient.Name}} <br/> {{ingredient.Amount}} {{ingredient.measurement.Unit}}
                         </div>
                     </div>
-                    <div class="button">
+                    <div class="button" ng-click="createIngredient()">
                         +
                     </div>
-                    <div class="button">
+                    <div class="button" ng-click="deleteIngredient()">
                         -
                     </div>
                 </div>
@@ -67,22 +67,22 @@
             <div class="ingredient-info">
                 <span>Ingredient</span>
                 <br />
-                <select ></select>
+                <select ng-disabled="ingredient == null" ng-options="i as i.Name for i in $root.ingredients" ng-model="ingredients[ingredient].ingredient" ng-change="ingredients[ingredient].Name = ingredients[ingredient].ingredient.Name; addIngredientToUpdate()"></select>
                 <br />
                 <br />
                 <span>Measurement Catagory</span>
                 <br />
-                <select ></select>
+                <select ng-disabled="ingredient == null" ng-options="c as c.Text for c in $root.measurementTypes" ng-model="ingredients[ingredient].mType"></select>
                 <br />
                 <br />
                 <span>Measurement</span>
                 <br />
-                <select></select>
+                <select ng-disabled="ingredient == null" ng-options="m as m.Name for m in ingredients[ingredient].mType.measurements" ng-model="ingredients[ingredient].measurement" ng-change="ingredients[ingredient].Unit = ingredients[ingredient].measurement.Unit; addIngredientToUpdate()"></select>
                 <br />
                 <br />
                 <span>Amount</span>
                 <br />
-                <input type="number">
+                <input ng-disabled="ingredient == null" type="number" ng-model="ingredients[ingredient].Amount" ng-change="addIngredientToUpdate()">
             </div>
         </div>
         <div class="option-area equpiment-area" ng-show="tab=='equipment'">
@@ -90,14 +90,14 @@
                 <p>Equipment</p>
                 <div class="list">
                     <div class="contents">
-                        <div class="equipment" ng-repeat="equipment in Equipment">
-                            {{equipment.Name}}
+                        <div ng-hide="eq.Method == 'DELETE'" class="item" ng-repeat="eq in equipmentz">
+                            {{eq.Text}}
                         </div>
                     </div>
-                    <div class="button">
+                    <div class="button" ng-click="createEquipment()">
                         +
                     </div>
-                    <div class="button">
+                    <div class="button" ng-click="deleteEquipment()">
                         -
                     </div>
                 </div>
@@ -105,7 +105,7 @@
             <div class="ingredient-info">
                 <span>Equipment</span>
                 <br />
-                <select ></select>
+                <select ng-options="e as e.Text for e in $root.equipment" ng-model="equipmentz["></select>
             </div>
         </div>
         <div class="option-area steps-area" ng-show="tab=='steps'">
@@ -113,22 +113,23 @@
                 <p>Steps</p>
                 <div class="list">
                     <div class="contents">
-                        <div class="step" ng-repeat="step in steps">
+                        <div class="item" ng-repeat="step in steps" ng-click="selectStep($index)" ng-hide="step.Method == 'DELETE'">
                             Step {{$index + 1}}
                         </div>
                     </div>
-                    <div class="button">
+                    <div class="button" ng-click="createStep()">
                         +
                     </div>
-                    <div class="button">
+                    <div class="button" ng-click="deleteStep()">
                         -
                     </div>
                 </div>
             </div>
-            <div class="ingredient-info">
-                <span>Step</span>
+            <div class="step-info">
+                <span ng-hide="step == null">Step <span ng-bind="step+1"></span></span>
+                <span ng-show="step == null">No steps for this drink</span>
                 <br />
-                <textarea ></textarea>
+                <textarea ng-disabled="step == null" ng-model="steps[step].Text" ng-change="addStepToUpdate()"></textarea>
             </div>
         </div>
         <div class="option-area steps-area" ng-show="tab=='skills'">
@@ -146,7 +147,7 @@
         <a class="button" ng-click="goBack()">
             Cancel
         </a>
-        <a class="button button-active-view">
+        <a class="button button-active-view" ng-click="runUpdate()">
             Submit
         </a>
     </div>

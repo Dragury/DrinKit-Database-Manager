@@ -343,10 +343,27 @@ html {
       }
     }
   }
+  .item {
+    padding: 2px;
+    background-image: -webkit-linear-gradient(fade(@drinKitLightBlue + #111, 25%), fade(@drinKitLightBlue, 25%));
+    cursor: default;
+    user-select: none;
+  }
 }
-.ingredient-info {
+.ingredient-info, .step-info {
   .position(30px, 0px, 0px, 160px);
 }
 .skill, .flag {
   display: inline-block;
+}
+
+.new-drink-button {
+  height: 100px;
+  span {
+    font-size: 70px;
+    margin-left: 50%;
+    left:-20px;
+    top: 9px;
+    position: relative;
+  }
 }

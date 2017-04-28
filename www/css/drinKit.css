@@ -319,7 +319,16 @@ html {
 .steps-list .list .button:last-of-type {
   left: 52%;
 }
-.ingredient-info {
+.ingredients-list .item,
+.equipment-list .item,
+.steps-list .item {
+  padding: 2px;
+  background-image: -webkit-linear-gradient(rgba(45, 206, 254, 0.25), rgba(28, 189, 237, 0.25));
+  cursor: default;
+  user-select: none;
+}
+.ingredient-info,
+.step-info {
   position: absolute;
   top: 30px;
   right: 0px;
@@ -329,4 +338,14 @@ html {
 .skill,
 .flag {
   display: inline-block;
+}
+.new-drink-button {
+  height: 100px;
+}
+.new-drink-button span {
+  font-size: 70px;
+  margin-left: 50%;
+  left: -20px;
+  top: 9px;
+  position: relative;
 }
