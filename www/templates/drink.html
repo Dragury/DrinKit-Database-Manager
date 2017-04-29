@@ -22,12 +22,14 @@
             <br/>
             <span>Flavour Text</span>
             <br/>
-            <textarea class="flavour-text" placeholder="Flavour Text for the search screen." ng-model="drink.FlavourText"></textarea>
+            <textarea class="flavour-text" placeholder="Flavour Text for the search screen."
+                      ng-model="drink.FlavourText"></textarea>
             <br/>
             <br/>
             <span>Description</span>
             <br/>
-            <textarea class="flavour-text" placeholder="Drink Description for drink screen." ng-model="drink.Description"></textarea>
+            <textarea class="flavour-text" placeholder="Drink Description for drink screen."
+                      ng-model="drink.Description"></textarea>
             <br/>
             <br/>
             <span style="display: inline-block">Type</span>
@@ -36,23 +38,16 @@
             <br/>
             <br/>
             <span style="display: inline-block">Image</span>
-            <table>
-                <tr>
-                    <td>
-                        <input type="text" class="image-path" ng-value="drink.newImage" disabled>
-                    </td>
-                    <td>
-                        <div class="button" id="browse-button">Browse</div>
-                    </td>
-                </tr>
-            </table>
+            <br/>
+            <input type="file" class="image-path">
         </div>
         <div class="option-area ingredients-area" ng-show="tab=='ingredients'">
             <div class="ingredients-list">
                 <p>Ingredients</p>
                 <div class="list">
                     <div class="contents">
-                        <div ng-hide="ingredient.Method == 'DELETE'" class="item" ng-repeat="ingredient in ingredients" ng-click="selectIngredient($index)">
+                        <div ng-hide="ingredient.Method == 'DELETE'" class="item" ng-repeat="ingredient in ingredients"
+                             ng-click="selectIngredient($index)">
                             {{ingredient.Name}} <br/> {{ingredient.Amount}} {{ingredient.measurement.Unit}}
                         </div>
                     </div>
@@ -66,23 +61,30 @@
             </div>
             <div class="ingredient-info">
                 <span>Ingredient</span>
-                <br />
-                <select ng-disabled="ingredient == null" ng-options="i as i.Name for i in $root.ingredients" ng-model="ingredients[ingredient].ingredient" ng-change="ingredients[ingredient].Name = ingredients[ingredient].ingredient.Name; addIngredientToUpdate()"></select>
-                <br />
-                <br />
+                <br/>
+                <select ng-disabled="ingredient == null" ng-options="i as i.Name for i in $root.ingredients"
+                        ng-model="ingredients[ingredient].ingredient"
+                        ng-change="ingredients[ingredient].Name = ingredients[ingredient].ingredient.Name; addIngredientToUpdate()"></select>
+                <br/>
+                <br/>
                 <span>Measurement Catagory</span>
-                <br />
-                <select ng-disabled="ingredient == null" ng-options="c as c.Text for c in $root.measurementTypes" ng-model="ingredients[ingredient].mType"></select>
-                <br />
-                <br />
+                <br/>
+                <select ng-disabled="ingredient == null" ng-options="c as c.Text for c in $root.measurementTypes"
+                        ng-model="ingredients[ingredient].mType"></select>
+                <br/>
+                <br/>
                 <span>Measurement</span>
-                <br />
-                <select ng-disabled="ingredient == null" ng-options="m as m.Name for m in ingredients[ingredient].mType.measurements" ng-model="ingredients[ingredient].measurement" ng-change="ingredients[ingredient].Unit = ingredients[ingredient].measurement.Unit; addIngredientToUpdate()"></select>
-                <br />
-                <br />
+                <br/>
+                <select ng-disabled="ingredient == null"
+                        ng-options="m as m.Name for m in ingredients[ingredient].mType.measurements"
+                        ng-model="ingredients[ingredient].measurement"
+                        ng-change="ingredients[ingredient].Unit = ingredients[ingredient].measurement.Unit; addIngredientToUpdate()"></select>
+                <br/>
+                <br/>
                 <span>Amount</span>
-                <br />
-                <input ng-disabled="ingredient == null" type="number" ng-model="ingredients[ingredient].Amount" ng-change="addIngredientToUpdate()">
+                <br/>
+                <input ng-disabled="ingredient == null" type="number" ng-model="ingredients[ingredient].Amount"
+                       ng-change="addIngredientToUpdate()">
             </div>
         </div>
         <div class="option-area equpiment-area" ng-show="tab=='equipment'">
@@ -90,8 +92,9 @@
                 <p>Equipment</p>
                 <div class="list">
                     <div class="contents">
-                        <div ng-hide="eq.Method == 'DELETE'" class="item" ng-repeat="eq in equipmentz">
-                            {{eq.Text}}
+                        <div ng-hide="eq.Method == 'DELETE'" class="item" ng-repeat="eq in equipmentz"
+                             ng-click="selectEquipment($index)">
+                            {{eq.e.Text}}
                         </div>
                     </div>
                     <div class="button" ng-click="createEquipment()">
@@ -104,8 +107,9 @@
             </div>
             <div class="ingredient-info">
                 <span>Equipment</span>
-                <br />
-                <select ng-options="e as e.Text for e in $root.equipment" ng-model="$root.eq"></select>
+                <br/>
+                <select ng-disabled="equipment == null" ng-options="e as e.Text for e in $root.equipment"
+                        ng-model="equipmentz[equipment].e" ng-change="addEquipmentToUpdate()"></select>
             </div>
         </div>
         <div class="option-area steps-area" ng-show="tab=='steps'">
@@ -113,7 +117,8 @@
                 <p>Steps</p>
                 <div class="list">
                     <div class="contents">
-                        <div class="item" ng-repeat="step in steps" ng-click="selectStep($index)" ng-hide="step.Method == 'DELETE'">
+                        <div class="item" ng-repeat="step in steps" ng-click="selectStep($index)"
+                             ng-hide="step.Method == 'DELETE'">
                             Step {{$index + 1}}
                         </div>
                     </div>
@@ -128,22 +133,66 @@
             <div class="step-info">
                 <span ng-hide="step == null">Step <span ng-bind="step+1"></span></span>
                 <span ng-show="step == null">No steps for this drink</span>
-                <br />
-                <textarea ng-disabled="step == null" ng-model="steps[step].Text" ng-change="addStepToUpdate()"></textarea>
+                <br/>
+                <textarea ng-disabled="step == null" ng-model="steps[step].Text"
+                          ng-change="addStepToUpdate()"></textarea>
             </div>
         </div>
-        <div class="option-area steps-area" ng-show="tab=='skills'">
-            <div class="skill">
-                <input type="checkbox">Muddling
+        <div class="option-area skills-area" ng-show="tab=='skills'">
+            <div class="skills-list">
+                <p>Equipment</p>
+                <div class="list">
+                    <div class="contents">
+                        <div ng-hide="skill.Method == 'DELETE'" class="item" ng-repeat="skill in skills"
+                             ng-click="selectSkill($index)">
+                            {{skill.s.Name}}
+                        </div>
+                    </div>
+                    <div class="button" ng-click="createSkill()">
+                        +
+                    </div>
+                    <div class="button" ng-click="deleteSkill()">
+                        -
+                    </div>
+                </div>
+            </div>
+            <div class="ingredient-info">
+                <span>Skills</span>
+                <br/>
+                <select ng-disabled="skill == null" ng-options="s as s.Name for s in $root.skills"
+                        ng-model="skills[skill].s" ng-change="addSkillsToUpdate()"></select>
             </div>
         </div>
-        <div class="option-area steps-area" ng-show="tab=='flags'">
-            <div class="flag">
-                <input type="checkbox">Alcoholic
+        <div class="option-area flags-area" ng-show="tab=='flags'">
+            <div class="flags-list">
+                <p>Flags</p>
+                <div class="list">
+                    <div class="contents">
+                        <div ng-hide="flag.Method == 'DELETE'" class="item" ng-repeat="flag in flags"
+                             ng-click="selectFlag($index)">
+                            {{flag.f.Text}}
+                        </div>
+                    </div>
+                    <div class="button" ng-click="createFlag()">
+                        +
+                    </div>
+                    <div class="button" ng-click="deleteFlag()">
+                        -
+                    </div>
+                </div>
+            </div>
+            <div class="ingredient-info">
+                <span>Equipment</span>
+                <br/>
+                <select ng-disabled="flag == null" ng-options="f as f.Text for f in $root.flags"
+                        ng-model="flags[flag].f" ng-change="addFlagsToUpdate()"></select>
             </div>
         </div>
     </div>
     <div class="drink-footer">
+        <a class="button button-filter-off" ng-click="deleteDrink()">
+            DELETE
+        </a>
         <a class="button" ng-click="goBack()">
             Cancel
         </a>

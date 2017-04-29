@@ -36,12 +36,31 @@ dKDBMApp
         };
     })
     .controller('drinksController', function ($scope, $location, $document, $timeout, $rootScope) {
-        $document.ready(function () {
-            $scope.reload();
-            fadeViewIn();
-        });
         $rootScope.drinks = [];
         $(".drinks").isotope();
+
+        $scope.createDrink = function () {
+            $.post("https://drinkit.pro/api/drink", {
+                AUTH: authKey,
+                NAME: "",
+                FLAVOURTEXT: "",
+                DESCRIPTION: "",
+                TYPEID: 1
+            }).done(function (data) {
+                fadeView();
+                $timeout(function () {
+                    $scope.reload();
+                    $scope.$apply();
+                    $scope.goToDrink(data[data.length - 1].ID);
+                }, 1000);
+            });
+        };
+        $scope.goToDrink = function (id) {
+            fadeView(false);
+            $timeout(function () {
+                $location.path("drink/" + id);
+            }, 1000);
+        };
         $scope.reload = function () {
             $.get("https://drinkit.pro/api/type").done(function (data) {
                 delete $rootScope.types;
@@ -71,6 +90,10 @@ dKDBMApp
                     console.log($rootScope.measurementTypes);
                 });
             });
+            $.get("https://drinkit.pro/api/flag").done(function (data) {
+                delete $rootScope.flags;
+                $rootScope.flags = data;
+            });
             $.get("https://drinkit.pro/api/drink").done(function (data) {
                 delete $rootScope.drinks;
                 $rootScope.drinks = data;
@@ -86,60 +109,68 @@ dKDBMApp
                 delete $rootScope.equipment;
                 $rootScope.equipment = data;
             });
-        };
-
-        $scope.createDrink = function () {
-            $.post("https://drinkit.pro/api/drink", {
-                AUTH: authKey,
-                NAME: "",
-                FLAVOURTEXT: "",
-                DESCRIPTION: "",
-                TYPEID: 1
-            }).done(function (data) {
-                fadeView();
-                $timeout(function () {
-                    $scope.reload();
-                    $scope.$apply();
-                    $scope.goToDrink(data[data.length - 1].ID);
-                }, 1000);
+            $.get("https://drinkit.pro/api/skill").done(function (data) {
+                delete $rootScope.skills;
+                $rootScope.skills = data;
             });
         };
-        function goto(id) {
-            $location.path("/drink/" + id);
-        };
+
+        $document.ready(function () {
+            $scope.reload();
+            fadeViewIn();
+        });
+
         function addURL(i) {
-            $.get("https://drinkit.pro/api/drink/image/" + $rootScope.drinks[i].ID).then(function (data) {
+            $.get("https://drinkit.pro/api/drink/" + $rootScope.drinks[i].ID + "/image").then(function (data) {
                 $rootScope.drinks[i].URL = data;
                 $scope.$apply();
             });
         }
-
-        $scope.goToDrink = function (id) {
-            fadeView(false);
-            $timeout(function () {
-                $location.path("drink/" + id);
-            }, 1000);
-        };
     })
     .controller('drinkController', function ($scope, $routeParams, $document, $rootScope, $location, $timeout) {
+        $scope.runUpdate = function () {
+            $.ajax({
+                url: "https://drinkit.pro/api/drink/" + $scope.drink.ID,
+                method: 'PUT',
+                data: {
+                    NAME: $scope.drink.Name,
+                    DESCRIPTION: $scope.drink.Description,
+                    FLAVOURTEXT: $scope.drink.FlavourText,
+                    TYPEID: $scope.type.ID,
+                    AUTH: authKey
+                }
+            });
+            submitDrinkSteps($scope.drink.ID, $scope.steps);
+            submitDrinkIngredients($scope.drink.ID, $scope.ingredients);
+            submitDrinkEquipment($scope.drink.ID, $scope.equipmentz);
+            submitDrinkFlags($scope.drink.ID, $scope.flags);
+            submitDrinkSkills($scope.drink.ID, $scope.skills);
+            uploadDrinkImage($scope.drink.ID, $(".image-path").val());
+            $scope.goBack();
+        };
         $scope.goBack = function () {
             fadeView();
             $timeout(function () {
                 $location.path("drinks/");
             }, 1000);
         };
+        $scope.deleteDrink = function () {
+            $.ajax({
+                url: "https://drinkit.pro/api/drink/" + $scope.drink.ID,
+                method: "DELETE",
+                data: {
+                    AUTH : authKey,
+                }
+            });
+            $scope.goBack();
+        };
+
         $scope.selectStep = function (index) {
             $scope.step = index;
         };
-        $scope.addStepToUpdate = function () {
-            if (!$scope.steps[$scope.step].Method) {
-                $scope.steps[$scope.step].Method = "PUT";
-            }
-        };
-        $scope.addIngredientToUpdate = function () {
-            if (!$scope.ingredients[$scope.ingredient].Method) {
-                $scope.ingredients[$scope.ingredient].Method = "PUT";
-            }
+        $scope.createStep = function () {
+            $scope.steps[$scope.steps.length] = {Method: "POST", Text: ""};
+            $scope.step = $scope.steps.length - 1;
         };
         $scope.deleteStep = function () {
             $scope.steps[$scope.step].Method = 'DELETE';
@@ -157,6 +188,116 @@ dKDBMApp
             }
             $scope.step = null;
         };
+        $scope.addStepToUpdate = function () {
+            if (!$scope.steps[$scope.step].Method) {
+                $scope.steps[$scope.step].Method = "PUT";
+            }
+        };
+
+        $scope.selectEquipment = function (index) {
+            $scope.equipment = index;
+        };
+        $scope.createEquipment = function () {
+            $scope.equipmentz[$scope.equipmentz.length] = {Method: "POST"};
+            $scope.equipment = $scope.equipmentz.length - 1;
+            $scope.equipmentz[$scope.equipment].e = {};
+            $scope.equipmentz[$scope.equipment].e.Text = "None Selected";
+        };
+        $scope.deleteEquipment = function () {
+            $scope.equipmentz[$scope.equipment].Method = 'DELETE';
+            for (let i = $scope.equipment; i >= 0; i--) {
+                if ($scope.equipmentz[i].Method != "DELETE") {
+                    $scope.equipment = i;
+                    return;
+                }
+            }
+            for (let i = $scope.equipment; i < $scope.equipmentz.length; i++) {
+                if ($scope.equipmentz[i].Method != "DELETE") {
+                    $scope.equipment = i;
+                    return;
+                }
+            }
+            $scope.equipment = null;
+        };
+        $scope.addEquipmentToUpdate = function () {
+            if (!$scope.equipmentz[$scope.equipment].Method) {
+                $scope.equipmentz[$scope.equipment].Method = "PUT";
+            }
+            console.log($scope.equipmentz[$scope.equipment]);
+        };
+
+        $scope.selectFlag = function (index) {
+            $scope.flag = index;
+        };
+        $scope.createFlag = function () {
+            $scope.flags[$scope.flags.length] = {Method: "POST"};
+            $scope.flag = $scope.flags.length - 1;
+            $scope.flags[$scope.flag].f = {};
+            $scope.flags[$scope.flag].f.Text = "None Selected";
+        };
+        $scope.deleteFlag = function () {
+            $scope.flags[$scope.flag].Method = 'DELETE';
+            for (let i = $scope.flag; i >= 0; i--) {
+                if ($scope.flags[i].Method != "DELETE") {
+                    $scope.flag = i;
+                    return;
+                }
+            }
+            for (let i = $scope.flag; i < $scope.flags.length; i++) {
+                if ($scope.flags[i].Method != "DELETE") {
+                    $scope.flag = i;
+                    return;
+                }
+            }
+            $scope.flag = null;
+        };
+        $scope.addFlagsToUpdate = function () {
+            if (!$scope.flags[$scope.flag].Method) {
+                $scope.flags[$scope.flag].Method = "PUT";
+            }
+            console.log($scope.flags[$scope.flag]);
+        };
+
+        $scope.selectSkill = function (index) {
+            $scope.skill = index;
+        };
+        $scope.createSkill = function () {
+            $scope.skills[$scope.skills.length] = {Method: "POST"};
+            $scope.skill = $scope.skills.length - 1;
+            $scope.skills[$scope.skill].s = {};
+            $scope.skills[$scope.skill].s.Name = "None Selected";
+        };
+        $scope.deleteSkill = function () {
+            $scope.skills[$scope.skill].Method = 'DELETE';
+            for (let i = $scope.skill; i >= 0; i--) {
+                if ($scope.skills[i].Method != "DELETE") {
+                    $scope.skill = i;
+                    return;
+                }
+            }
+            for (let i = $scope.skill; i < $scope.skills.length; i++) {
+                if ($scope.skills[i].Method != "DELETE") {
+                    $scope.skill = i;
+                    return;
+                }
+            }
+            $scope.skill = null;
+        };
+        $scope.addSkillsToUpdate = function () {
+            if (!$scope.skills[$scope.skill].Method) {
+                $scope.skills[$scope.skill].Method = "PUT";
+            }
+            console.log($scope.skills[$scope.skill]);
+        };
+
+        $scope.selectIngredient = function (index) {
+            $scope.ingredient = index;
+        };
+        $scope.createIngredient = function () {
+            $scope.ingredients[$scope.ingredients.length] = {Method: "POST", Name: "-New-", Unit: "--"};
+            $scope.ingredient = $scope.ingredients.length - 1;
+            console.log($scope.ingredients);
+        };
         $scope.deleteIngredient = function () {
             $scope.ingredients[$scope.ingredient].Method = 'DELETE';
             for (let i = $scope.ingredient; i >= 0; i--) {
@@ -173,27 +314,21 @@ dKDBMApp
             }
             $scope.ingredient = null;
         };
+        $scope.addIngredientToUpdate = function () {
+            if (!$scope.ingredients[$scope.ingredient].Method) {
+                $scope.ingredients[$scope.ingredient].Method = "PUT";
+            }
+        };
 
-        $scope.createStep = function () {
-            $scope.steps[$scope.steps.length] = {Method: "POST", Text: ""};
-            $scope.step = $scope.steps.length - 1;
+        $scope.tab = "general";
+        $scope.goToTab = function (target) {
+            let oldTab = '.' + $scope.tab;
+            let newTab = '.' + target;
+            $(oldTab).removeClass("button-active-view");
+            $(newTab).addClass("button-active-view");
+            $scope.tab = target;
         };
-        $scope.runUpdate = function () {
-            $.ajax({
-                url: "https://drinkit.pro/api/drink/" + $scope.drink.ID,
-                method: 'PUT',
-                data: {
-                    NAME: $scope.drink.Name,
-                    DESCRIPTION: $scope.drink.Description,
-                    FLAVOURTEXT: $scope.drink.FlavourText,
-                    TYPEID: $scope.type.ID,
-                    AUTH: authKey
-                }
-            });
-            submitDrinkSteps($scope.drink.ID, $scope.steps);
-            submitDrinkIngredients($scope.drink.ID, $scope.ingredients);
-            $scope.goBack();
-        };
+
         $document.ready(function () {
 
 
@@ -214,6 +349,7 @@ dKDBMApp
             $scope.step = null;
             $.get("https://drinkit.pro/api/drink/" + $scope.drink.ID + "/step").done(function (data) {
                 $scope.steps = data;
+                $scope.step = null;
                 if ($scope.steps[0]) {
                     $scope.step = 0;
                 }
@@ -221,6 +357,7 @@ dKDBMApp
             });
             $.get("https://drinkit.pro/api/drink/" + $scope.drink.ID + "/ingredient").done(function (data) {
                 $scope.ingredients = data;
+                $scope.ingredient = null;
                 if ($scope.ingredients[0]) {
                     $scope.ingredient = 0;
                 }
@@ -249,33 +386,55 @@ dKDBMApp
             });
             $.get("https://drinkit.pro/api/drink/" + $scope.drink.ID + "/equipment").done(function (data) {
                 $scope.equipmentz = data;
-                if($scope.equipmentz[0]){
+                for (var i = 0; i < $scope.equipmentz.length; i++) {
+                    for (var j = 0; j < $rootScope.equipment.length; j++) {
+                        if ($scope.equipmentz[i].ID == $rootScope.equipment[j].ID) {
+                            $scope.equipmentz[i].e = $rootScope.equipment[j];
+                            break;
+                        }
+                    }
+                }
+                $scope.equipment = null;
+                if ($scope.equipmentz[0]) {
                     $scope.equipment = 0;
+                }
+                $scope.$apply();
+            });
+            $.get("https://drinkit.pro/api/drink/" + $scope.drink.ID + "/flag").done(function (data) {
+                $scope.flags = data;
+                for (var i = 0; i < $scope.flags.length; i++) {
+                    for (var j = 0; j < $rootScope.flags.length; j++) {
+                        if ($scope.flags[i].ID == $rootScope.flags[j].ID) {
+                            $scope.flags[i].f = $rootScope.flags[j];
+                            break;
+                        }
+                    }
+                }
+                $scope.flag = null;
+                if ($scope.flags[0]) {
+                    $scope.flag = 0;
+                }
+                $scope.$apply();
+            });
+            $.get("https://drinkit.pro/api/drink/" + $scope.drink.ID + "/skill").done(function (data) {
+                $scope.skills = data;
+                for (var i = 0; i < $scope.skills.length; i++) {
+                    for (var j = 0; j < $rootScope.skills.length; j++) {
+                        if ($scope.skills[i].ID == $rootScope.skills[j].ID) {
+                            $scope.skills[i].s = $rootScope.skills[j];
+                            break;
+                        }
+                    }
+                }
+                $scope.skill = null;
+                if ($scope.skills[0]) {
+                    $scope.skill = 0;
                 }
                 $scope.$apply();
             });
             $scope.$apply();
             fadeViewIn();
         });
-
-        $scope.selectIngredient = function (index) {
-            $scope.ingredient = index;
-        }
-
-        $scope.createIngredient = function () {
-            $scope.ingredients[$scope.ingredients.length] = {Method: "POST", Name: "-New-", Unit: "--"};
-            $scope.ingredient = $scope.ingredients.length - 1;
-            console.log($scope.ingredients);
-        }
-
-        $scope.tab = "general";
-        $scope.goToTab = function (target) {
-            let oldTab = '.' + $scope.tab;
-            let newTab = '.' + target;
-            $(oldTab).removeClass("button-active-view");
-            $(newTab).addClass("button-active-view");
-            $scope.tab = target;
-        };
     })
     .controller('appController', function ($scope, $location) {
         $location.path("login");
@@ -366,5 +525,147 @@ function submitDrinkIngredients(drinkID, ingredientsList) {
             default:
                 break;
         }
+    }
+}
+function submitDrinkEquipment(drinkID, equipmentList) {
+    for (let i = 0; i < equipmentList.length; i++) {
+        switch (equipmentList[i].Method) {
+            case "POST":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/equipment",
+                    method: 'POST',
+                    data: {
+                        AUTH: authKey,
+                        EQUIPMENTID: equipmentList[i].e.ID,
+                    }
+                });
+                break;
+            case "PUT":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/equipment/" + equipmentList[i].ID,
+                    method: 'DELETE',
+                    data: {
+                        AUTH: authKey
+                    }
+                });
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/equipment",
+                    method: 'POST',
+                    data: {
+                        AUTH: authKey,
+                        EQUIPMENTID: equipmentList[i].e.ID,
+                    }
+                });
+                break;
+            case "DELETE":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/equipment/" + equipmentList[i].e.ID,
+                    method: 'DELETE',
+                    data: {
+                        AUTH: authKey
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+}
+function submitDrinkFlags(drinkID, flagList) {
+    for (let i = 0; i < flagList.length; i++) {
+        switch (flagList[i].Method) {
+            case "POST":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/flag/"+flagList[i].f.ID,
+                    method: 'POST',
+                    data: {
+                        AUTH: authKey
+                    }
+                });
+                break;
+            case "PUT":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/flag/"+flagList[i].ID,
+                    method: 'DELETE',
+                    data: {
+                        AUTH: authKey,
+                    }
+                });
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/flag/"+flagList[i].f.ID,
+                    method: 'POST',
+                    data: {
+                        AUTH: authKey,
+                    }
+                });
+                break;
+            case "DELETE":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/flag/"+flagList[i].ID,
+                    method: 'DELETE',
+                    data: {
+                        AUTH: authKey,
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+}
+function submitDrinkSkills(drinkID, skillList) {
+    for (let i = 0; i < skillList.length; i++) {
+        switch (skillList[i].Method) {
+            case "POST":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/skill/" + skillList[i].s.ID,
+                    method: 'POST',
+                    data: {
+                        AUTH: authKey
+                    }
+                });
+                break;
+            case "PUT":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/skill/" + skillList[i].ID,
+                    method: 'DELETE',
+                    data: {
+                        AUTH: authKey
+                    }
+                });
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/skill/" + skillList[i].s.ID,
+                    method: 'POST',
+                    data: {
+                        AUTH: authKey
+                    }
+                });
+                break;
+            case "DELETE":
+                $.ajax({
+                    url: "https://drinkit.pro/api/drink/" + drinkID + "/skill/" + skillList[i].ID,
+                    method: 'DELETE',
+                    data: {
+                        AUTH: authKey
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+}
+function uploadDrinkImage(drinkID, imagePath){
+    if(imagePath){
+        var formData = new FormData();
+        formData.append("AUTH", authKey);
+        formData.append("IMAGE", $('.image-path')[0].files[0]);
+        $.ajax({
+            url: "https://drinkit.pro/api/drink/" + drinkID + "/image",
+            method: "PUT",
+            data: formData,
+            processData: false,
+            contentType: false
+        });
     }
 }
