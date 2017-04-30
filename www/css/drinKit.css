@@ -155,62 +155,65 @@ html {
   margin: -2px;
   vertical-align: text-bottom;
 }
-.drink-box a > div {
+.item-box {
+  margin: 0;
+}
+.item-box a > div {
   position: relative;
   margin: 3px 5px;
   border-radius: 3px;
   background: rgba(3, 89, 127, 0.25) -webkit-linear-gradient(top, rgba(20, 106, 144, 0.25), rgba(3, 89, 127, 0.25));
   overflow: hidden;
 }
-.drink-box a > div .name {
+.item-box a > div .name {
   position: absolute;
   top: 15px;
   left: 110px;
   font-size: 20px;
 }
-.drink-box a > div .description {
+.item-box a > div .description {
   padding: 10px;
 }
-.drink-box a > div .ingredients {
+.item-box a > div .ingredients {
   padding-top: 0;
   font-style: italic;
   color: #555;
   font-size: 10px;
 }
-.drink-box a > div .drink-info {
+.item-box a > div .drink-info {
   position: relative;
   margin-top: -5px;
   background-color: #E2E2E2;
 }
-.drink-box a > div p {
+.item-box a > div p {
   padding: 10px;
   margin: 0;
 }
 @media all and (max-width: 800px) {
-  .drink-box {
+  .item-box {
     width: 100%;
   }
 }
 @media all and (min-width: 801px) {
-  .drink-box {
+  .item-box {
     width: 50%;
   }
 }
 @media all and (min-width: 1200px) {
-  .drink-box {
+  .item-box {
     width: 33.333%;
   }
 }
 @media all and (min-width: 1800px) {
-  .drink-box {
+  .item-box {
     width: 25%;
   }
 }
-.drink-box img {
+.item-box img {
   width: 100px;
   height: 100px;
 }
-.drinks-area {
+.list-area {
   padding: 0 10px 0 10px;
   overflow-y: auto;
   position: absolute;
@@ -219,22 +222,22 @@ html {
   bottom: 0;
   left: 0;
 }
-.drink-header {
+.view-header {
   height: 120px;
 }
-.drink-header img {
+.view-header img {
   position: absolute;
   left: 30px;
   top: 10px;
   width: 100px;
   height: auto;
 }
-.drink-header h1 {
+.view-header h1 {
   position: absolute;
   top: 30px;
   left: 150px;
 }
-.drink-settings {
+.view-settings {
   padding: 10px;
   position: absolute;
   top: 130px;
@@ -244,19 +247,19 @@ html {
   background: rgba(3, 89, 127, 0.25) -webkit-linear-gradient(top, rgba(20, 106, 144, 0.25), rgba(0, 67, 96, 0.25));
   border-radius: 3px;
 }
-.drink-settings [type="text"],
-.drink-settings textarea {
+.view-settings [type="text"],
+.view-settings textarea {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
-.drink-settings [type="text"] {
+.view-settings [type="text"] {
   height: 27px;
 }
-.drink-settings textarea {
+.view-settings textarea {
   min-height: 50px;
 }
-.drink-settings .option-area {
+.view-settings .option-area {
   position: absolute;
   top: 47px;
   right: 5px;
@@ -264,24 +267,24 @@ html {
   left: 5px;
   overflow-y: auto;
 }
-.drink-settings table {
+.view-settings table {
   width: 100%;
 }
-.drink-settings table td:last-child {
+.view-settings table td:last-child {
   width: 100px;
 }
-.drink-settings table td:last-child .button {
+.view-settings table td:last-child .button {
   width: 100%;
 }
 .navigation-buttons > .button {
   display: inline-block;
 }
-.drink-footer {
+.view-footer {
   position: absolute;
   bottom: 20px;
   right: 20px;
 }
-.drink-footer .button {
+.view-footer .button {
   margin-left: 10px;
 }
 .ingredients-list,
@@ -351,13 +354,16 @@ html {
 .flag {
   display: inline-block;
 }
-.new-drink-button {
+.new-item-button {
   height: 100px;
 }
-.new-drink-button span {
+.new-item-button span {
   font-size: 70px;
   margin-left: 50%;
   left: -20px;
   top: 9px;
   position: relative;
+}
+.skill-item {
+  height: 100px;
 }

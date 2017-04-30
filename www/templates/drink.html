@@ -1,11 +1,11 @@
 <div class="view-wrapper">
-    <div class="drink-header">
+    <div class="view-header">
         <img src="{{drink.URL}}">
         <h1>
             {{drink.Name}}
         </h1>
     </div>
-    <div class="drink-settings">
+    <div class="view-settings">
         <div class="navigation-buttons">
             <div class="button general button-active-view" ng-click="goToTab('general')">General</div>
             <div class="button ingredients" ng-click="goToTab('ingredients')">Ingredients</div>
@@ -189,7 +189,7 @@
             </div>
         </div>
     </div>
-    <div class="drink-footer">
+    <div class="view-footer">
         <a class="button button-filter-off" ng-click="deleteDrink()">
             DELETE
         </a>

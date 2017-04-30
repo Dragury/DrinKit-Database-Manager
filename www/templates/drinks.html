@@ -1,36 +1,41 @@
 <div class="view-wrapper">
     <ul class="filter-buttons">
-        <li>
-            <div class="button button-filter-on">
-                Cocktails
-            </div>
-        </li>
-        <li>
-            <div class="button button-filter-on">
-                Mocktails
-            </div>
-        </li>
-        <li>
-            <div class="button button-filter-on">
-                Milkshakes
-            </div>
-        </li>
-        <li>
-            <div class="button button-filter-off">
-                Smoothies
-            </div>
-        </li>
+        <!--<li>-->
+            <!--<div class="button button-filter-on">-->
+                <!--Cocktails-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<div class="button button-filter-on">-->
+                <!--Mocktails-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<div class="button button-filter-on">-->
+                <!--Milkshakes-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<div class="button button-filter-off">-->
+                <!--Smoothies-->
+            <!--</div>-->
+        <!--</li>-->
         <li class="reload">
             <div class="button" ng-click="reload()">
                 Reload
                 <img src="img/reload.png">
             </div>
         </li>
+        <li class="reload">
+            <div class="button" ng-click="goToSkills()">
+                Skills
+            </div>
+        </li>
 
     </ul>
-    <div class="drinks-area">
+    <div class="list-area">
         <div class="drinks">
-            <div ng-repeat="drink in drinks" class="drink-box">
+            <div ng-repeat="drink in drinks" class="item-box">
                 <a ng-click="goToDrink(drink.ID)">
                     <div>
                         <img src="{{drink.URL}}">
@@ -41,9 +46,9 @@
                     </div>
                 </a>
             </div>
-            <div class="drink-box">
+            <div class="item-box">
                 <a ng-click="createDrink()">
-                    <div class="new-drink-button">
+                    <div class="new-item-button">
                         <span>+</span>
                     </div>
                 </a>

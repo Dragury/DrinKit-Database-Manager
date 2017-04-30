@@ -6,7 +6,16 @@ let dKDBMApp = angular.module('dKDBMApp', ['ngRoute', 'ngResource']).config(func
     }).when("/drinks", {
         templateUrl: "templates/drinks.html",
         controller: 'drinksController'
-    }).when("/drink/:id", {templateUrl: "templates/drink.html", controller: 'drinkController'}).otherwise("/login");
+    }).when("/drink/:id", {
+        templateUrl: "templates/drink.html",
+        controller: 'drinkController'
+    }).when("/skills", {
+        templateUrl: "templates/skills.html",
+        controller: 'skillsController'
+    }).when("/skill/:id", {
+        templateUrl: "templates/skill.html",
+        controller: 'skillController'
+    }).otherwise("/login");
 });
 dKDBMApp
     .controller('loginController', function ($scope, $timeout, $document, $location, $rootScope) {
@@ -59,6 +68,12 @@ dKDBMApp
             fadeView(false);
             $timeout(function () {
                 $location.path("drink/" + id);
+            }, 1000);
+        };
+        $scope.goToSkills = function () {
+            fadeView();
+            $timeout(function () {
+                $location.path("skills/");
             }, 1000);
         };
         $scope.reload = function () {
@@ -126,6 +141,56 @@ dKDBMApp
                 $scope.$apply();
             });
         }
+    })
+    .controller('skillsController', function ($scope, $location, $document, $timeout, $rootScope) {
+        $rootScope.skills = [];
+        $(".skills").isotope();
+
+        $scope.createSkill = function () {
+            $.post("https://drinkit.pro/api/skill", {
+                AUTH: authKey,
+                NAME: "",
+                DIFFICULTYID: 1
+            }).done(function (data) {
+                fadeView();
+                $timeout(function () {
+                    $scope.reload();
+                    $scope.$apply();
+                    $scope.goToSkill(data[data.length - 1].ID);
+                }, 1000);
+            });
+        };
+        $scope.goToSkill = function (id) {
+            fadeView(false);
+            $timeout(function () {
+                $location.path("skill/" + id);
+            }, 1000);
+        };
+        $scope.goToDrinks = function () {
+            fadeView();
+            $timeout(function () {
+                $location.path("drinks/");
+            }, 1000);
+        };
+        $scope.reload = function () {
+            $.get("https://drinkit.pro/api/skill/difficulty").done(function (data) {
+                delete $rootScope.types;
+                $rootScope.difficulties = data;
+            });
+            $.get("https://drinkit.pro/api/skill").done(function (data) {
+                delete $rootScope.skills;
+                $rootScope.skills = data;
+                $scope.$apply();
+                let skills = $(".skills");
+                skills.isotope('destroy');
+                skills.isotope();
+            });
+        };
+
+        $document.ready(function () {
+            $scope.reload();
+            fadeViewIn();
+        });
     })
     .controller('drinkController', function ($scope, $routeParams, $document, $rootScope, $location, $timeout) {
         $scope.runUpdate = function () {
@@ -436,6 +501,104 @@ dKDBMApp
             fadeViewIn();
         });
     })
+    .controller('skillController', function ($scope, $routeParams, $document, $rootScope, $location, $timeout) {
+        $scope.runUpdate = function () {
+            $.ajax({
+                url: "https://drinkit.pro/api/skill/" + $scope.skill.ID,
+                method: 'PUT',
+                data: {
+                    NAME: $scope.skill.Name,
+                    DIFFICULTYID: $scope.skill.d.ID,
+                    AUTH: authKey
+                }
+            });
+            submitSkillSteps($scope.skill.ID, $scope.steps);
+            $scope.goBack();
+        };
+        $scope.goBack = function () {
+            fadeView();
+            $timeout(function () {
+                $location.path("skills/");
+            }, 1000);
+        };
+        $scope.deleteSkill = function () {
+            $.ajax({
+                url: "https://drinkit.pro/api/skill/" + $scope.skill.ID,
+                method: "DELETE",
+                data: {
+                    AUTH : authKey,
+                }
+            });
+            $scope.goBack();
+        };
+
+        $scope.selectStep = function (index) {
+            $scope.step = index;
+        };
+        $scope.createStep = function () {
+            $scope.steps[$scope.steps.length] = {Method: "POST", Text: ""};
+            $scope.step = $scope.steps.length - 1;
+        };
+        $scope.deleteStep = function () {
+            $scope.steps[$scope.step].Method = 'DELETE';
+            for (let i = $scope.step; i >= 0; i--) {
+                if ($scope.steps[i].Method != "DELETE") {
+                    $scope.step = i;
+                    return;
+                }
+            }
+            for (let i = $scope.step; i < $scope.steps.length; i++) {
+                if ($scope.steps[i].Method != "DELETE") {
+                    $scope.step = i;
+                    return;
+                }
+            }
+            $scope.step = null;
+        };
+        $scope.addStepToUpdate = function () {
+            if (!$scope.steps[$scope.step].Method) {
+                $scope.steps[$scope.step].Method = "PUT";
+            }
+        };
+
+        $scope.tab = "general";
+        $scope.goToTab = function (target) {
+            let oldTab = '.' + $scope.tab;
+            let newTab = '.' + target;
+            $(oldTab).removeClass("button-active-view");
+            $(newTab).addClass("button-active-view");
+            $scope.tab = target;
+        };
+
+        $document.ready(function () {
+
+            console.log($rootScope.types);
+            for (let i = 0; i < $rootScope.skills.length; i++) {
+                if ($rootScope.skills[i].ID == $routeParams.id) {
+                    $scope.skill = $rootScope.skills[i];
+                    console.log($scope.skill);
+                    break;
+                }
+            }
+            for(let i = 0; i < $rootScope.difficulties.length; i++) {
+                if($scope.skill.DifficultyID == $rootScope.difficulties[i].ID){
+                    $scope.skill.d = $rootScope.difficulties[i];
+                    break;
+                }
+            }
+            $scope.step = null;
+            $.get("https://drinkit.pro/api/skill/" + $scope.skill.ID + "/step").done(function (data) {
+                $scope.steps = data;
+                $scope.step = null;
+                if ($scope.steps[0]) {
+                    $scope.step = 0;
+                }
+                $scope.$apply();
+            });
+            $scope.$apply();
+            fadeViewIn();
+        });
+    })
     .controller('appController', function ($scope, $location) {
         $location.path("login");
     });
@@ -477,6 +640,35 @@ function submitDrinkSteps(drinkID, stepsList) {
             case "DELETE":
                 $.ajax({
                     url: "https://drinkit.pro/api/drink/" + drinkID + "/step/" + stepsList[i].ID,
+                    method: 'DELETE',
+                    data: {AUTH: authKey}
+                });
+                break;
+            default:
+                break;
+        }
+    }
+}
+function submitSkillSteps(drinkID, stepsList) {
+    for (let i = 0; i < stepsList.length; i++) {
+        switch (stepsList[i].Method) {
+            case "POST":
+                $.ajax({
+                    url: "https://drinkit.pro/api/skill/" + drinkID + "/step",
+                    method: 'POST',
+                    data: {AUTH: authKey, TEXT: stepsList[i].Text}
+                });
+                break;
+            case "PUT":
+                $.ajax({
+                    url: "https://drinkit.pro/api/skill/" + drinkID + "/step/" + stepsList[i].ID,
+                    method: 'PUT',
+                    data: {AUTH: authKey, TEXT: stepsList[i].Text}
+                });
+                break;
+            case "DELETE":
+                $.ajax({
+                    url: "https://drinkit.pro/api/skill/" + drinkID + "/step/" + stepsList[i].ID,
                     method: 'DELETE',
                     data: {AUTH: authKey}
                 });

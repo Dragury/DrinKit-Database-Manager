@@ -1,0 +1,34 @@
+<div class="view-wrapper">
+    <ul class="filter-buttons">
+        <li class="reload">
+            <div class="button" ng-click="reload()">
+                Reload
+                <img src="img/reload.png">
+            </div>
+        </li>
+        <li class="reload">
+            <div class="button" ng-click="goToDrinks()">
+                Drinks
+            </div>
+        </li>
+
+    </ul>
+    <div class="list-area">
+        <div class="skills">
+            <div ng-repeat="skill in skills" class="item-box">
+                <a ng-click="goToSkill(skill.ID)">
+                    <div class="skill-item">
+                        <h1 class="name">{{skill.Name}}</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="item-box">
+                <a ng-click="createSkill()">
+                    <div class="new-item-button">
+                        <span>+</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

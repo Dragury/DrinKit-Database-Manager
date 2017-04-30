@@ -1,0 +1,60 @@
+<div class="view-wrapper">
+    <div class="view-header">
+        <h1>
+            {{skill.Name}}
+        </h1>
+    </div>
+    <div class="view-settings">
+        <div class="navigation-buttons">
+            <div class="button general button-active-view" ng-click="goToTab('general')">General</div>
+            <div class="button steps" ng-click="goToTab('steps')">Steps</div>
+        </div>
+        <div class="option-area general-area" ng-show="tab=='general'">
+            <span>Name</span>
+            <br/>
+            <input type="text" placeholder="Skill Name" ng-model="skill.Name">
+            <br/>
+            <br/>
+            <span style="display: inline-block">Type</span>
+            <br/>
+            <select class="form-control" ng-options="d as d.Text for d in $root.difficulties" ng-model="skill.d"></select>
+        </div>
+        <div class="option-area steps-area" ng-show="tab=='steps'">
+            <div class="steps-list">
+                <p>Steps</p>
+                <div class="list">
+                    <div class="contents">
+                        <div class="item" ng-repeat="step in steps" ng-click="selectStep($index)"
+                             ng-hide="step.Method == 'DELETE'">
+                            Step {{$index + 1}}
+                        </div>
+                    </div>
+                    <div class="button" ng-click="createStep()">
+                        +
+                    </div>
+                    <div class="button" ng-click="deleteStep()">
+                        -
+                    </div>
+                </div>
+            </div>
+            <div class="step-info">
+                <span ng-hide="step == null">Step <span ng-bind="step+1"></span></span>
+                <span ng-show="step == null">No steps for this drink</span>
+                <br/>
+                <textarea ng-disabled="step == null" ng-model="steps[step].Text"
+                          ng-change="addStepToUpdate()"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="view-footer">
+        <a class="button button-filter-off" ng-click="deleteSkill()">
+            DELETE
+        </a>
+        <a class="button" ng-click="goBack()">
+            Cancel
+        </a>
+        <a class="button button-active-view" ng-click="runUpdate()">
+            Submit
+        </a>
+    </div>
+</div>
